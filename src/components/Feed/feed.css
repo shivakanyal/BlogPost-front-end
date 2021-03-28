@@ -1,0 +1,12 @@
+.feed {
+  margin: 30px auto;
+  width: 800px !important;
+  background-color: #333;
+}
+.feed:first-child {
+  margin-top: 0;
+}
+.red {
+  background-color: red im !important;
+  /* color: red !important; */
+}
