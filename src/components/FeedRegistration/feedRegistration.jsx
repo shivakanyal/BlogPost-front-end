@@ -18,7 +18,12 @@ const FeedRegistrationForm = (props) => {
 
   return (
     <Container justify="center">
-      <Typography varient="h1" component="h2" gutterBottom>
+      <Typography
+        varient="h1"
+        component="h2"
+        gutterBottom
+        className="form-heading"
+      >
         Create a New Article
       </Typography>
       <form

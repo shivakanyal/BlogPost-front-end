@@ -7,7 +7,10 @@ import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
+import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 
+import "./header.css";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -94,6 +97,14 @@ export default function SearchAppBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
+          <Link to="/articles/register" className="nav-links">
+            <Button varient="contained" className="button-links">
+              Register
+            </Button>
+          </Link>
+          <Link to="/" className="nav-links">
+            <Button className="button-links">Articles</Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </div>

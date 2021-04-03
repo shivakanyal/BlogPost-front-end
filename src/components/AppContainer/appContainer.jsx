@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 import { getFeeds } from "../../services/fakeFeedServices";
 import FeedBox from "../FeedBox/feedBox";
 import FeedRegistration from "../FeedRegistration/feedRegistration";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 class AppContainer extends Component {
   state = {
     feeds: getFeeds(),
@@ -16,6 +18,7 @@ class AppContainer extends Component {
     const Newfeeds = [feed, ...this.state.feeds];
     console.log(Newfeeds);
     this.setState({ feeds: Newfeeds });
+    // history.pushState("/");
   };
   handleDelete = (id) => {
     console.log("id : ", id);
@@ -28,8 +31,17 @@ class AppContainer extends Component {
     console.log("feeds:", this.state.feeds);
     return (
       <Fragment>
-        <FeedBox feeds={this.state.feeds} handleDelete={this.handleDelete} />
-        <FeedRegistration handleSubmit={this.handleSubmit} />
+        <Switch>
+          <Route exact path="/">
+            <FeedBox
+              feeds={this.state.feeds}
+              handleDelete={this.handleDelete}
+            />
+          </Route>
+          <Route path="/articles/register">
+            <FeedRegistration handleSubmit={this.handleSubmit} />
+          </Route>
+        </Switch>
       </Fragment>
     );
   }
