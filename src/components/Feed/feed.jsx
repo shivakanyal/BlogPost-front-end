@@ -1,35 +1,41 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-
 import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import { red, grey } from "@material-ui/core/colors";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import "./feed.css";
-const useStyles = makeStyles({
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+const useStyles = makeStyles(() => ({
   root: {
-    // maxWidth: 345,
+    margin: 25,
+    Minwidth: 360,
+    backgroundColor: grey[200],
   },
   media: {
-    height: 400,
+    height: 0,
+    paddingTop: "56.25%", // 16:9
   },
-});
+  avatar: {
+    backgroundColor: red[500],
+  },
+}));
 
-export default function Feed(props) {
+const Feed = ({ _id, title, content, handleDelete }) => {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root + " feed"}>
+    <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar + " red"}>
+          <Avatar aria-label="recipe" className={classes.avatar}>
             R
           </Avatar>
         }
@@ -41,32 +47,31 @@ export default function Feed(props) {
         title="Shrimp and Chorizo Paella"
         subheader="September 14, 2016"
       />
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image="https://source.unsplash.com/random/700x600"
-          title="Contemplative Reptile"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {props.title}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {props.content}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button variant="contained" color="red">
-          View
-        </Button>
-        <Button variant="contained" color="primary">
-          Edit
-        </Button>
-        <Button variant="contained" color="secondary">
-          Delete
-        </Button>
+      <CardMedia
+        className={classes.media}
+        image="https://source.unsplash.com/random"
+        title="Paella dish"
+      />
+      <CardContent>
+        <Typography variant="body1" fontWeight="fontWeightBold" component="p">
+          {title}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p" noWrap>
+          {content}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton>
+        <IconButton aria-label="share">
+          <EditIcon />
+        </IconButton>
+        <IconButton onClick={() => handleDelete(_id)}>
+          <DeleteIcon />
+        </IconButton>
       </CardActions>
     </Card>
   );
-}
+};
+export default Feed;

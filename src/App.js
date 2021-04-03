@@ -1,9 +1,12 @@
 import "./App.css";
-import FeedBox from "./components/FeedBox/feedBox";
+import Header from "./components/Header/header";
+import AppContainer from "./components/AppContainer/appContainer";
+// import { Route, Switch, BrowserRouter } from "react-router-dom";
 function App() {
   return (
     <div className="App">
-      <FeedBox />
+      <Header />
+      <AppContainer />
     </div>
   );
 }
