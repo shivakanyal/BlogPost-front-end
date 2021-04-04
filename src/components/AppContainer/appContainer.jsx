@@ -3,7 +3,7 @@ import { getFeeds } from "../../services/fakeFeedServices";
 import FeedBox from "../FeedBox/feedBox";
 import FeedRegistration from "../FeedRegistration/feedRegistration";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
+import FeedView from "../FeedView/feedView";
 class AppContainer extends Component {
   state = {
     feeds: getFeeds(),
@@ -27,6 +27,7 @@ class AppContainer extends Component {
     console.log(newFeeds);
     this.setState({ feeds: newFeeds });
   };
+
   render() {
     console.log("feeds:", this.state.feeds);
     return (
@@ -38,13 +39,19 @@ class AppContainer extends Component {
               handleDelete={this.handleDelete}
             />
           </Route>
-          <Route path="/articles/register">
+          <Route exact path="/articles/register">
             <FeedRegistration handleSubmit={this.handleSubmit} />
           </Route>
+          <Route
+            exact
+            path="/articles/:id"
+            render={(props) => (
+              <FeedView feeds={this.state.feeds} test="test" {...props} />
+            )}
+          />
         </Switch>
       </Fragment>
     );
   }
 }
-
 export default AppContainer;
