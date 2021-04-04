@@ -102,7 +102,7 @@ export default function SearchAppBar() {
               Register
             </Button>
           </Link>
-          <Link to="/" className="nav-links">
+          <Link to="/articles" className="nav-links">
             <Button className="button-links">Articles</Button>
           </Link>
         </Toolbar>

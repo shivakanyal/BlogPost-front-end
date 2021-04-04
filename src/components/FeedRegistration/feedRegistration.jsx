@@ -27,7 +27,9 @@ const FeedRegistrationForm = (props) => {
         Create a New Article
       </Typography>
       <form
-        onSubmit={(e) => props.handleSubmit(e, { title, content, category })}
+        onSubmit={(e) =>
+          props.handleSubmit(e, { title, content, category, ...props })
+        }
       >
         <TextField
           onChange={(e) => setTitle(e.target.value)}
