@@ -67,9 +67,11 @@ const Feed = ({ _id, title, content, handleDelete }) => {
             <FullscreenIcon />
           </IconButton>
         </Link>
-        <IconButton aria-label="share">
-          <EditIcon />
-        </IconButton>
+        <Link to={`/articles/register/${_id}`}>
+          <IconButton aria-label="share">
+            <EditIcon />
+          </IconButton>
+        </Link>
         <IconButton onClick={() => handleDelete(_id)}>
           <DeleteIcon />
         </IconButton>
@@ -77,4 +79,5 @@ const Feed = ({ _id, title, content, handleDelete }) => {
     </Card>
   );
 };
+
 export default Feed;

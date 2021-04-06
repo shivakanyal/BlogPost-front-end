@@ -9,6 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red, grey } from "@material-ui/core/colors";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { Redirect } from "react-router";
 const useStyles = makeStyles(() => ({
   root: {
     margin: 25,
@@ -28,8 +29,13 @@ const FeedView = (props) => {
   const classes = useStyles();
 
   const id = props.match.params.id;
-  const feed = props.feeds.find((prop) => prop._id == id);
-
+  const feed = props.feeds.find(
+    (prop) => prop._id.toString() === id.toString()
+  );
+  if (!feed) {
+    <Redirect to="/not-found" />;
+    return null;
+  }
   return (
     <Card className={classes.root}>
       <CardHeader

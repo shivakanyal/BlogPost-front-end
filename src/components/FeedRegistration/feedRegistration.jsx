@@ -11,10 +11,26 @@ import { KeyboardArrowRight } from "@material-ui/icons";
 import React, { useState } from "react";
 import "./feedRegistration.css";
 
+import { useParams } from "react-router-dom";
+
 const FeedRegistrationForm = (props) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [category, setCategory] = useState("other");
+  const { id } = useParams();
+  let Ftitle = "";
+  let Fcontent = "";
+  let Fcategory = "other";
+  if (id) {
+    const feed = props.feeds.find(
+      (feed) => feed._id.toString() === id.toString()
+    );
+    console.log("feed : ", feed);
+    Ftitle = feed.title;
+    Fcontent = feed.content;
+    Fcategory = feed.category;
+  }
+
+  const [title, setTitle] = useState(Ftitle);
+  const [content, setContent] = useState(Fcontent);
+  const [category, setCategory] = useState(Fcategory);
 
   return (
     <Container justify="center">
@@ -28,7 +44,7 @@ const FeedRegistrationForm = (props) => {
       </Typography>
       <form
         onSubmit={(e) =>
-          props.handleSubmit(e, { title, content, category, ...props })
+          props.handleSubmit(e, { id, title, content, category, ...props })
         }
       >
         <TextField
@@ -39,6 +55,7 @@ const FeedRegistrationForm = (props) => {
           fullWidth
           required
           color="secondary"
+          value={title}
         />
         <TextField
           onChange={(e) => setContent(e.target.value)}
@@ -48,6 +65,7 @@ const FeedRegistrationForm = (props) => {
           color="secondary"
           multiline
           rows={4}
+          value={content}
           fullWidth
           required
         />
