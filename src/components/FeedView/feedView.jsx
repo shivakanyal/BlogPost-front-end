@@ -54,7 +54,7 @@ const FeedView = (props) => {
       />
       <CardMedia
         className={classes.media}
-        image="https://source.unsplash.com/random"
+        image={"http://localhost:8080/" + feed.imageUrl}
         title="Paella dish"
       />
       <CardContent>

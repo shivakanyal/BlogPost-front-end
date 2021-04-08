@@ -7,26 +7,78 @@ import FeedView from "../FeedView/feedView";
 import NotFound from "../NotFound/notFound";
 class AppContainer extends Component {
   state = {
-    feeds: getFeeds(),
+    feeds: [],
   };
-  handleSubmit = (e, { id, title, content, category, history }) => {
+  componentDidMount() {
+    fetch("http://localhost:8080/feed/posts", {
+      method: "GET",
+      //  headers:{
+      //    Authorization:"Bearer " + localStorage.getItem("token")
+      //  }
+    })
+      .then((posts) => {
+        return posts.json();
+      })
+      .then(({ posts }) => {
+        console.log(posts);
+        this.setState({ feeds: posts });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  handleSubmit = (e, { id, title, content, category, image, history }) => {
     e.preventDefault();
     const feed = {
       _id: Math.random(),
       title: title,
       content: content,
       category: category,
+      image: image,
     };
     const Newfeeds = [feed, ...this.state.feeds];
     this.setState({ feeds: Newfeeds });
     history.push("/articles");
+    console.log("hey i am running ");
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("category", category);
+    formData.append("image", image);
+    console.log("formData:", formData);
+    fetch("http://localhost:8080/feed/post", {
+      method: "POST",
+      // body: JSON.stringify({
+      //   title: title,
+      //   content: content,
+      //   category: category,
+      // }),
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => console.log("here is the data:", data))
+      .catch((err) => console.log("error:", err));
   };
   handleDelete = (id) => {
+    const prevFeeds = this.state.feeds;
     const newFeeds = this.state.feeds.filter((feed) => feed._id !== id);
     console.log(newFeeds);
     this.setState({ feeds: newFeeds });
+    fetch("http://localhost:8080/feed/post/" + id, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((result) => console.log(result))
+      .catch((err) => {
+        alert("Some error occur");
+        this.setState({ feeds: prevFeeds });
+        console.log("inside error", err);
+      });
   };
-
   handleEdit = (e, { id, title, content, category, history }) => {
     e.preventDefault();
     id = parseInt(id);

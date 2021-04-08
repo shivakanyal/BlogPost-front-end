@@ -22,7 +22,6 @@ const FeedRegistrationForm = (props) => {
     const feed = props.feeds.find(
       (feed) => feed._id.toString() === id.toString()
     );
-    console.log("feed : ", feed);
     Ftitle = feed.title;
     Fcontent = feed.content;
     Fcategory = feed.category;
@@ -31,7 +30,7 @@ const FeedRegistrationForm = (props) => {
   const [title, setTitle] = useState(Ftitle);
   const [content, setContent] = useState(Fcontent);
   const [category, setCategory] = useState(Fcategory);
-
+  const [image, setImage] = useState(null);
   return (
     <Container justify="center">
       <Typography
@@ -44,7 +43,14 @@ const FeedRegistrationForm = (props) => {
       </Typography>
       <form
         onSubmit={(e) =>
-          props.handleSubmit(e, { id, title, content, category, ...props })
+          props.handleSubmit(e, {
+            id,
+            title,
+            content,
+            category,
+            image,
+            ...props,
+          })
         }
       >
         <TextField
@@ -54,7 +60,7 @@ const FeedRegistrationForm = (props) => {
           variant="outlined"
           fullWidth
           required
-          color="secondary"
+          color="primary"
           value={title}
         />
         <TextField
@@ -62,13 +68,22 @@ const FeedRegistrationForm = (props) => {
           className="form-input"
           label="Content"
           variant="outlined"
-          color="secondary"
+          color="primary"
           multiline
           rows={4}
           value={content}
           fullWidth
           required
         />
+        <Button variant="contained" component="label">
+          <input
+            type="file"
+            onChange={(e) => {
+              setImage(e.target.files[0]);
+              console.log(e.target.files[0]);
+            }}
+          />
+        </Button>
         <RadioGroup
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -88,7 +103,7 @@ const FeedRegistrationForm = (props) => {
         </RadioGroup>
         <Button
           type="submit"
-          color="secondary"
+          color="primary"
           variant="contained"
           endIcon={<KeyboardArrowRight />}
         >

@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Feed = ({ _id, title, content, handleDelete }) => {
+const Feed = ({ _id, title, content, imageUrl, handleDelete }) => {
   const classes = useStyles();
 
   return (
@@ -50,7 +50,7 @@ const Feed = ({ _id, title, content, handleDelete }) => {
       />
       <CardMedia
         className={classes.media}
-        image="https://source.unsplash.com/random"
+        image={"http://localhost:8080/" + imageUrl}
         title="Paella dish"
       />
       <CardContent>
