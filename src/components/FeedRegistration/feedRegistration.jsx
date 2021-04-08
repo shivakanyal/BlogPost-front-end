@@ -18,6 +18,7 @@ const FeedRegistrationForm = (props) => {
   let Ftitle = "";
   let Fcontent = "";
   let Fcategory = "other";
+  let Fimage = null;
   if (id) {
     const feed = props.feeds.find(
       (feed) => feed._id.toString() === id.toString()
@@ -25,12 +26,15 @@ const FeedRegistrationForm = (props) => {
     Ftitle = feed.title;
     Fcontent = feed.content;
     Fcategory = feed.category;
+    Fimage = feed.imageUrl;
+    console.log(Ftitle, Fcontent, Fcategory);
+    console.log("Fimage", Fimage);
   }
 
   const [title, setTitle] = useState(Ftitle);
   const [content, setContent] = useState(Fcontent);
   const [category, setCategory] = useState(Fcategory);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(Fimage);
   return (
     <Container justify="center">
       <Typography

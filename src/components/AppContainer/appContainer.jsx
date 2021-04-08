@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { getFeeds } from "../../services/fakeFeedServices";
+// import { getFeeds } from "../../services/fakeFeedServices";
 import FeedBox from "../FeedBox/feedBox";
 import FeedRegistration from "../FeedRegistration/feedRegistration";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -31,15 +31,13 @@ class AppContainer extends Component {
   handleSubmit = (e, { id, title, content, category, image, history }) => {
     e.preventDefault();
     const feed = {
-      _id: Math.random(),
+      // _id: Math.random(),
       title: title,
       content: content,
       category: category,
       image: image,
     };
-    const Newfeeds = [feed, ...this.state.feeds];
-    this.setState({ feeds: Newfeeds });
-    history.push("/articles");
+
     console.log("hey i am running ");
 
     const formData = new FormData();
@@ -56,10 +54,19 @@ class AppContainer extends Component {
       //   category: category,
       // }),
       body: formData,
+      // There will not be any header for FormData
+      // Header for form-data will automatically get appended.
     })
       .then((res) => res.json())
-      .then((data) => console.log("here is the data:", data))
+      .then((data) => {
+        console.log(data);
+        const Newfeeds = [feed, ...this.state.feeds];
+        this.setState({ feeds: Newfeeds });
+        history.push("/articles");
+      })
       .catch((err) => console.log("error:", err));
+
+    // Updating The UI
   };
   handleDelete = (id) => {
     const prevFeeds = this.state.feeds;
@@ -79,13 +86,27 @@ class AppContainer extends Component {
         console.log("inside error", err);
       });
   };
-  handleEdit = (e, { id, title, content, category, history }) => {
+  handleEdit = (e, { id, title, content, category, image, history }) => {
     e.preventDefault();
-    id = parseInt(id);
+    // id = parseInt(id);
+
+    console.log("id:", id);
     const feeds = [...this.state.feeds];
     const index = this.state.feeds.findIndex(
       (feed) => feed._id.toString() === id.toString()
     );
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("category", category);
+    formData.append("image", image);
+
+    fetch("http://localhost:8080/feed/post/" + id, {
+      method: "PUT",
+      body: formData,
+    });
+
+    console.log("index", index);
     feeds[index] = { _id: id, title, content, category };
     this.setState({ feeds: feeds });
     history.push("/articles");
