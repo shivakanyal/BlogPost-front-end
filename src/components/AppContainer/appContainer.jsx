@@ -5,6 +5,8 @@ import FeedRegistration from "../FeedRegistration/feedRegistration";
 import { Redirect, Route, Switch } from "react-router-dom";
 import FeedView from "../FeedView/feedView";
 import NotFound from "../NotFound/notFound";
+import Login from "../LoginForm/loginForm";
+import SignUp from "../SignUpForm/signUpForm";
 class AppContainer extends Component {
   state = {
     feeds: [],
@@ -89,7 +91,7 @@ class AppContainer extends Component {
   handleEdit = (e, { id, title, content, category, image, history }) => {
     e.preventDefault();
     // id = parseInt(id);
-
+    console.log("image", image);
     console.log("id:", id);
     const feeds = [...this.state.feeds];
     const index = this.state.feeds.findIndex(
@@ -147,7 +149,8 @@ class AppContainer extends Component {
               handleDelete={this.handleDelete}
             />
           </Route>
-
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={SignUp} />
           <Redirect exact from="/" to="/articles" />
           <Redirect to="/not-found" />
         </Switch>

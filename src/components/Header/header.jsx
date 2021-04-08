@@ -105,6 +105,9 @@ export default function SearchAppBar() {
           <Link to="/articles" className="nav-links">
             <Button className="button-links">Articles</Button>
           </Link>
+          <Link to="/login" className="nav-links">
+            <Button className="button-links">Login</Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </div>
