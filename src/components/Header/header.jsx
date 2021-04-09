@@ -66,9 +66,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function SearchAppBar({ user }) {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <AppBar position="sticky">
@@ -97,17 +96,25 @@ export default function SearchAppBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
-          <Link to="/articles/register" className="nav-links">
-            <Button varient="contained" className="button-links">
-              Register
-            </Button>
-          </Link>
+          {user && (
+            <Link to="/articles/register" className="nav-links">
+              <Button varient="contained" className="button-links">
+                Register
+              </Button>
+            </Link>
+          )}
           <Link to="/articles" className="nav-links">
             <Button className="button-links">Articles</Button>
           </Link>
-          <Link to="/login" className="nav-links">
-            <Button className="button-links">Login</Button>
-          </Link>
+          {!user ? (
+            <Link to="/login" className="nav-links">
+              <Button className="button-links">Login</Button>
+            </Link>
+          ) : (
+            <Link to="/logout" className="nav-links">
+              <Button className="button-links">Logout</Button>
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
     </div>

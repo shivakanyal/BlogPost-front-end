@@ -29,9 +29,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Feed = ({ _id, title, content, imageUrl, handleDelete }) => {
+const Feed = ({ user, _id, title, content, imageUrl, handleDelete }) => {
   const classes = useStyles();
-
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -61,21 +60,23 @@ const Feed = ({ _id, title, content, imageUrl, handleDelete }) => {
           {content}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        <Link to={`/articles/${_id}`}>
-          <IconButton aria-label="add to favorites">
-            <FullscreenIcon />
+      {user && (
+        <CardActions disableSpacing>
+          <Link to={`/articles/${_id}`}>
+            <IconButton aria-label="add to favorites">
+              <FullscreenIcon />
+            </IconButton>
+          </Link>
+          <Link to={`/articles/register/${_id}`}>
+            <IconButton aria-label="share">
+              <EditIcon />
+            </IconButton>
+          </Link>
+          <IconButton onClick={() => handleDelete(_id)}>
+            <DeleteIcon />
           </IconButton>
-        </Link>
-        <Link to={`/articles/register/${_id}`}>
-          <IconButton aria-label="share">
-            <EditIcon />
-          </IconButton>
-        </Link>
-        <IconButton onClick={() => handleDelete(_id)}>
-          <DeleteIcon />
-        </IconButton>
-      </CardActions>
+        </CardActions>
+      )}
     </Card>
   );
 };

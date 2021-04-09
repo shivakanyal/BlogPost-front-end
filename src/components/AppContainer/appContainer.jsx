@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-// import { getFeeds } from "../../services/fakeFeedServices";
 import FeedBox from "../FeedBox/feedBox";
 import FeedRegistration from "../FeedRegistration/feedRegistration";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -7,7 +6,11 @@ import FeedView from "../FeedView/feedView";
 import NotFound from "../NotFound/notFound";
 import Login from "../LoginForm/loginForm";
 import SignUp from "../SignUpForm/signUpForm";
+import Logout from "../Logout/logout";
 class AppContainer extends Component {
+  constructor(props) {
+    super(props);
+  }
   state = {
     feeds: [],
   };
@@ -30,10 +33,38 @@ class AppContainer extends Component {
       });
   }
 
+  handleLoginFormSubmit = (e, email, password, history) => {
+    e.preventDefault();
+    fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => res.json())
+      .then(({ token }) => {
+        console.log(token);
+        localStorage.setItem("token", token);
+        if (!token) {
+          alert("Email or password is incorrect.");
+        } else if (token) {
+          this.setState({ isAuthenticate: true });
+          window.location = "/articles";
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("some error occur");
+      });
+  };
+
   handleSubmit = (e, { id, title, content, category, image, history }) => {
     e.preventDefault();
     const feed = {
-      // _id: Math.random(),
       title: title,
       content: content,
       category: category,
@@ -48,13 +79,13 @@ class AppContainer extends Component {
     formData.append("category", category);
     formData.append("image", image);
     console.log("formData:", formData);
+    const tokenn = localStorage.getItem("token");
+    console.log("token", tokenn);
     fetch("http://localhost:8080/feed/post", {
       method: "POST",
-      // body: JSON.stringify({
-      //   title: title,
-      //   content: content,
-      //   category: category,
-      // }),
+      headers: {
+        Authorization: "Bearer " + tokenn,
+      },
       body: formData,
       // There will not be any header for FormData
       // Header for form-data will automatically get appended.
@@ -90,7 +121,6 @@ class AppContainer extends Component {
   };
   handleEdit = (e, { id, title, content, category, image, history }) => {
     e.preventDefault();
-    // id = parseInt(id);
     console.log("image", image);
     console.log("id:", id);
     const feeds = [...this.state.feeds];
@@ -102,7 +132,6 @@ class AppContainer extends Component {
     formData.append("content", content);
     formData.append("category", category);
     formData.append("image", image);
-
     fetch("http://localhost:8080/feed/post/" + id, {
       method: "PUT",
       body: formData,
@@ -147,9 +176,17 @@ class AppContainer extends Component {
             <FeedBox
               feeds={this.state.feeds}
               handleDelete={this.handleDelete}
+              user={this.props.user}
             />
           </Route>
-          <Route exact path="/login" component={Login} />
+          <Route
+            exact
+            path="/login"
+            render={(props) => (
+              <Login handleSubmit={this.handleLoginFormSubmit} {...props} />
+            )}
+          />
+          <Route exact path="/logout" component={Logout} />
           <Route exact path="/signup" component={SignUp} />
           <Redirect exact from="/" to="/articles" />
           <Redirect to="/not-found" />

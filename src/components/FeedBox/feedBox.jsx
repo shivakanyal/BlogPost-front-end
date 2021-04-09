@@ -3,6 +3,9 @@ import React, { Component } from "react";
 import Feed from "../Feed/feed";
 import "./feedBox.css";
 class FeedBox extends Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <Container>
@@ -18,6 +21,7 @@ class FeedBox extends Component {
               xs={12}
             >
               <Feed
+                user={this.props.user}
                 key={_id}
                 _id={_id}
                 title={title}

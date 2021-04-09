@@ -6,17 +6,16 @@ import {
   TextField,
   Grid,
   Paper,
-  AppBar,
+  // AppBar,
   Typography,
-  Toolbar,
+  // Toolbar,
 } from "@material-ui/core";
 // import { BRAND_NAME } from "../constants";
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: "", password: "", authflag: 1 };
+    this.state = { email: "", password: "", isAuthenticate: false };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleChange(event) {
     this.setState({
@@ -24,29 +23,6 @@ class Login extends React.Component {
       password: event.state.password,
     });
   }
-  handleSubmit(event) {
-    event.preventDefault();
-    fetch("http://localhost:8080/auth/login", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        //   history.push('/articles');
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("some error occur");
-      });
-  }
-
   render() {
     return (
       <div>
@@ -89,7 +65,16 @@ class Login extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <form onSubmit={this.handleSubmit}>
+                  <form
+                    onSubmit={(e) =>
+                      this.props.handleSubmit(
+                        e,
+                        this.state.email,
+                        this.state.password,
+                        this.props.history
+                      )
+                    }
+                  >
                     <Grid container direction="column" spacing={2}>
                       <Grid item>
                         <TextField

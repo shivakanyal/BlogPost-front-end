@@ -5,7 +5,12 @@ import { Button, TextField, Grid, Paper, Typography } from "@material-ui/core";
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { username: "", password: "", email: "", authflag: 1 };
+    this.state = {
+      username: "",
+      password: "",
+      email: "",
+      isAuthenticate: false,
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -23,9 +28,12 @@ class SignUp extends React.Component {
       }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        //   history.push('/articles');
+      .then(({ userId }) => {
+        console.log(userId);
+        if (!userId) {
+          alert("User with given email is already registered.");
+          // this.setState({ username: "", password: "", email: "" });
+        } else this.props.history.push("/login");
       })
       .catch((err) => {
         console.log(err);
@@ -88,7 +96,6 @@ class SignUp extends React.Component {
                             })
                           }
                           required
-                          autoFocus
                         />
                       </Grid>
                       <Grid item>
