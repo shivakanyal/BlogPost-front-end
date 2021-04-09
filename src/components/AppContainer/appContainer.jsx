@@ -95,7 +95,7 @@ class AppContainer extends Component {
         console.log(data);
         const Newfeeds = [feed, ...this.state.feeds];
         this.setState({ feeds: Newfeeds });
-        history.push("/articles");
+        window.location = "/articles";
       })
       .catch((err) => console.log("error:", err));
 
@@ -140,7 +140,7 @@ class AppContainer extends Component {
     console.log("index", index);
     feeds[index] = { _id: id, title, content, category };
     this.setState({ feeds: feeds });
-    history.push("/articles");
+    window.location = "/articles";
   };
   render() {
     return (

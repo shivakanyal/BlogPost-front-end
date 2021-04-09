@@ -10,6 +10,7 @@ class App extends React.Component {
     try {
       const token = localStorage.getItem("token");
       const user = jwtDecode(token);
+      console.log(user);
       this.setState({ user, isAuthenticate: true });
     } catch (err) {
       console.log(err);

@@ -17,8 +17,10 @@ import { Link } from "react-router-dom";
 const useStyles = makeStyles(() => ({
   root: {
     margin: 25,
-    Minwidth: 360,
+    // minWidth: 340,
+    // maxwidth: 500,
     backgroundColor: grey[200],
+    width: 340,
   },
   media: {
     height: 0,
@@ -29,14 +31,23 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Feed = ({ user, _id, title, content, imageUrl, handleDelete }) => {
+const Feed = ({
+  user,
+  _id,
+  title,
+  content,
+  imageUrl,
+  handleDelete,
+  date,
+  creatorName,
+}) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+            {creatorName[0].toUpperCase()}
           </Avatar>
         }
         action={
@@ -44,8 +55,8 @@ const Feed = ({ user, _id, title, content, imageUrl, handleDelete }) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={creatorName}
+        subheader={date}
       />
       <CardMedia
         className={classes.media}
@@ -53,7 +64,12 @@ const Feed = ({ user, _id, title, content, imageUrl, handleDelete }) => {
         title="Paella dish"
       />
       <CardContent>
-        <Typography variant="body1" fontWeight="fontWeightBold" component="p">
+        <Typography
+          variant="body1"
+          fontWeight="fontWeightBold"
+          component="p"
+          noWrap
+        >
           {title}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p" noWrap>
