@@ -10,7 +10,7 @@ import {
 import { KeyboardArrowRight } from "@material-ui/icons";
 import React, { useState } from "react";
 import "./feedRegistration.css";
-
+// import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const FeedRegistrationForm = (props) => {
@@ -19,16 +19,16 @@ const FeedRegistrationForm = (props) => {
   let Fcontent = "";
   let Fcategory = "other";
   let Fimage = null;
-  if (id) {
+
+  if (id && props.feeds.length >= 1) {
     const feed = props.feeds.find(
       (feed) => feed._id.toString() === id.toString()
     );
+
     Ftitle = feed.title;
     Fcontent = feed.content;
     Fcategory = feed.category;
     Fimage = feed.imageUrl;
-    console.log(Ftitle, Fcontent, Fcategory);
-    console.log("Fimage", Fimage);
   }
 
   const [title, setTitle] = useState(Ftitle);
@@ -84,7 +84,6 @@ const FeedRegistrationForm = (props) => {
             type="file"
             onChange={(e) => {
               setImage(e.target.files[0]);
-              console.log(e.target.files[0]);
             }}
           />
         </Button>

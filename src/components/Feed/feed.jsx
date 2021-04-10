@@ -37,11 +37,13 @@ const Feed = ({
   title,
   content,
   imageUrl,
+  creatorId,
   handleDelete,
   date,
   creatorName,
 }) => {
   const classes = useStyles();
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -51,9 +53,11 @@ const Feed = ({
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <Link to={`/articles/${_id}`}>
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          </Link>
         }
         title={creatorName}
         subheader={date}
@@ -76,7 +80,7 @@ const Feed = ({
           {content}
         </Typography>
       </CardContent>
-      {user && (
+      {user && user.userId === creatorId && (
         <CardActions disableSpacing>
           <Link to={`/articles/${_id}`}>
             <IconButton aria-label="add to favorites">

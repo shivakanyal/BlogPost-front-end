@@ -66,8 +66,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar({ user }) {
+export default function SearchAppBar({ user, feeds, handleSearch }) {
   const classes = useStyles();
+
+  const handleEvent = (value) => {
+    const filteredFeeds = feeds.filter(({ title }) =>
+      title.toLowerCase().includes(value.toLowerCase())
+    );
+    handleSearch(filteredFeeds);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="sticky">
@@ -94,6 +102,7 @@ export default function SearchAppBar({ user }) {
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => handleEvent(e.target.value)}
             />
           </div>
           {user && (

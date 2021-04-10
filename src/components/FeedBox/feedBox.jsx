@@ -3,15 +3,20 @@ import React, { Component } from "react";
 import Feed from "../Feed/feed";
 import "./feedBox.css";
 class FeedBox extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <Container>
         <Grid container justify="center" alignItems="center">
           {this.props.feeds.map(
-            ({ _id, title, content, imageUrl, date, creatorName }) => (
+            ({
+              _id,
+              title,
+              content,
+              imageUrl,
+              date,
+              creatorName,
+              creatorId,
+            }) => (
               <Grid
                 key={_id + "hulle"}
                 item
@@ -30,7 +35,8 @@ class FeedBox extends Component {
                   imageUrl={imageUrl}
                   date={date}
                   creatorName={creatorName}
-                  handleDelete={this.props.handleDelete}
+                  creatorId={creatorId}
+                  handleDelete={() => this.props.handleDelete(_id)}
                 />
               </Grid>
             )

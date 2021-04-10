@@ -70,8 +70,7 @@ class Login extends React.Component {
                       this.props.handleSubmit(
                         e,
                         this.state.email,
-                        this.state.password,
-                        this.props.history
+                        this.state.password
                       )
                     }
                   >
