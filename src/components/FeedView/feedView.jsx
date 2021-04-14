@@ -41,7 +41,7 @@ const FeedView = (props) => {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+            {feed.creatorName[0].toUpperCase()}
           </Avatar>
         }
         action={
@@ -49,12 +49,12 @@ const FeedView = (props) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={feed.creatorName}
+        subheader={feed.date}
       />
       <CardMedia
         className={classes.media}
-        image={"http://localhost:8080/" + feed.imageUrl}
+        image={process.env.REACT_APP_API_URL + "/" + feed.imageUrl}
         title="Paella dish"
       />
       <CardContent>

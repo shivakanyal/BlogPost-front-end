@@ -41,7 +41,11 @@ class AppContainer extends Component {
             exact
             path="/articles/:id"
             render={(props) => (
-              <FeedView feeds={this.props.feeds} test="test" {...props} />
+              <FeedView
+                feeds={this.props.feeds}
+                user={this.props.user}
+                {...props}
+              />
             )}
           />
           <Route path="/not-found" component={NotFound} />

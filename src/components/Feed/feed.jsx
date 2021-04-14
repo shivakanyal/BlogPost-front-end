@@ -64,7 +64,7 @@ const Feed = ({
       />
       <CardMedia
         className={classes.media}
-        image={"http://localhost:8080/" + imageUrl}
+        image={process.env.REACT_APP_API_URL + "/" + imageUrl}
         title="Paella dish"
       />
       <CardContent>

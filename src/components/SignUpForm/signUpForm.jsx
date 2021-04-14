@@ -16,7 +16,7 @@ class SignUp extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    fetch("http://localhost:8080/auth/signup", {
+    fetch(process.env.REACT_APP_API_URL + "/auth/signup", {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -28,9 +28,10 @@ class SignUp extends React.Component {
       }),
     })
       .then((res) => res.json())
-      .then(({ userId }) => {
-        console.log(userId);
-        if (!userId) {
+      .then((response) => {
+        console.log(response);
+        if (response.statusCode >= 400 && response.statusCode <= 500) {
+          console.log(response);
           alert("User with given email is already registered.");
           // this.setState({ username: "", password: "", email: "" });
         } else this.props.history.push("/login");
@@ -112,6 +113,16 @@ class SignUp extends React.Component {
                             })
                           }
                           required
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          // error
+                          id="filled-error-helper-text"
+                          label="Error"
+                          // defaultValue="Hello World"
+                          helperText="Incorrect entry."
+                          variant="outlined"
                         />
                       </Grid>
                       <Grid item>

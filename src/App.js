@@ -8,7 +8,7 @@ class App extends React.Component {
 
   handleLoginFormSubmit = (e, email, password) => {
     e.preventDefault();
-    fetch("http://localhost:8080/auth/login", {
+    fetch(process.env.REACT_APP_API_URL + "/auth/login", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -49,7 +49,7 @@ class App extends React.Component {
     formData.append("category", category);
     formData.append("image", image);
     const tokenn = localStorage.getItem("token");
-    fetch("http://localhost:8080/feed/post", {
+    fetch(process.env.REACT_APP_API_URL + "/feed/post", {
       method: "POST",
       headers: {
         Authorization: "Bearer " + tokenn,
@@ -64,7 +64,10 @@ class App extends React.Component {
         this.setState({ feeds: Newfeeds });
         window.location = "/articles";
       })
-      .catch((err) => console.log("error:", err));
+      .catch((err) => {
+        console.log("error:", err);
+        alert("title and content should be 5 charecter long");
+      });
 
     // Updating The UI
   };
@@ -74,7 +77,7 @@ class App extends React.Component {
     this.setState({ feeds: newFeeds, filteredFeeds: newFeeds });
 
     const tokenn = localStorage.getItem("token");
-    fetch("http://localhost:8080/feed/post/" + id, {
+    fetch(process.env.REACT_APP_API_URL + "/feed/post/" + id, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + tokenn,
@@ -83,7 +86,7 @@ class App extends React.Component {
       .then((res) => {
         return res.json();
       })
-      .then((result) => console.log(result))
+      .then((result) => console.log("post is deleted successfully!"))
       .catch((err) => {
         alert("Some error occur");
         this.setState({ feeds: prevFeeds });
@@ -96,34 +99,37 @@ class App extends React.Component {
     const index = this.state.feeds.findIndex(
       (feed) => feed._id.toString() === id.toString()
     );
+
+    feeds[index] = { _id: id, title, content, category };
+    this.setState({ feeds: feeds });
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
     formData.append("category", category);
     formData.append("image", image);
     const tokenn = localStorage.getItem("token");
-    fetch("http://localhost:8080/feed/post/" + id, {
+    fetch(process.env.REACT_APP_API_URL + "/feed/post/" + id, {
       method: "PUT",
       body: formData,
       headers: {
         Authorization: "Bearer " + tokenn,
       },
-    });
-
-    feeds[index] = { _id: id, title, content, category };
-    this.setState({ feeds: feeds });
-    window.location = "/articles";
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        window.location = "/articles";
+      });
   };
 
   componentDidMount() {
-    fetch("http://localhost:8080/feed/posts", {
+    fetch(process.env.REACT_APP_API_URL + "/feed/posts", {
       method: "GET",
     })
       .then((posts) => {
         return posts.json();
       })
       .then(({ posts }) => {
-        console.log(posts);
         this.setState({ feeds: posts, filteredFeeds: posts });
       })
       .catch((err) => {
@@ -144,7 +150,6 @@ class App extends React.Component {
   };
 
   render() {
-    console.log("feeds inside appContainer", this.state.feeds);
     return (
       <div className="App">
         <Header
