@@ -73,6 +73,7 @@ class App extends React.Component {
   };
   handleDelete = (id) => {
     const prevFeeds = this.state.feeds;
+    console.log("prevFeeds : ", prevFeeds);
     const newFeeds = this.state.feeds.filter((feed) => feed._id !== id);
     this.setState({ feeds: newFeeds, filteredFeeds: newFeeds });
 
@@ -84,12 +85,16 @@ class App extends React.Component {
       },
     })
       .then((res) => {
+        if (res.status === 500) {
+          this.setState({ feeds: prevFeeds, filteredFeeds: prevFeeds });
+          throw new Error("some error occur please login again.");
+        }
         return res.json();
       })
       .then((result) => console.log("post is deleted successfully!"))
       .catch((err) => {
-        alert("Some error occur");
-        this.setState({ feeds: prevFeeds });
+        alert("some error occur please login again.");
+        this.setState({ feeds: prevFeeds, filteredFeeds: prevFeeds });
         console.log("inside error", err);
       });
   };
@@ -121,7 +126,6 @@ class App extends React.Component {
         window.location = "/articles";
       });
   };
-
   componentDidMount() {
     fetch(process.env.REACT_APP_API_URL + "/feed/posts", {
       method: "GET",

@@ -4,14 +4,13 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import { KeyboardArrowRight } from "@material-ui/icons";
 import React, { useState } from "react";
 import "./feedRegistration.css";
-// import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 const FeedRegistrationForm = (props) => {
   const { id } = useParams();
@@ -45,7 +44,7 @@ const FeedRegistrationForm = (props) => {
       >
         Create a New Article
       </Typography>
-      <form
+      <ValidatorForm
         onSubmit={(e) =>
           props.handleSubmit(e, {
             id,
@@ -57,17 +56,21 @@ const FeedRegistrationForm = (props) => {
           })
         }
       >
-        <TextField
+        <TextValidator
           onChange={(e) => setTitle(e.target.value)}
           className="form-input"
           label="Title"
           variant="outlined"
           fullWidth
-          required
           color="primary"
           value={title}
+          validators={["required", "minStringLength:5"]}
+          errorMessages={[
+            "required",
+            "Title should be atleast 5 charecter long.",
+          ]}
         />
-        <TextField
+        <TextValidator
           onChange={(e) => setContent(e.target.value)}
           className="form-input"
           label="Content"
@@ -77,7 +80,11 @@ const FeedRegistrationForm = (props) => {
           rows={4}
           value={content}
           fullWidth
-          required
+          validators={["required", "minStringLength:5"]}
+          errorMessages={[
+            "required",
+            "Content should be atleast 5 charecter long.",
+          ]}
         />
         <Button variant="contained" component="label">
           <input
@@ -85,6 +92,7 @@ const FeedRegistrationForm = (props) => {
             onChange={(e) => {
               setImage(e.target.files[0]);
             }}
+            required={id === undefined}
           />
         </Button>
         <RadioGroup
@@ -112,7 +120,7 @@ const FeedRegistrationForm = (props) => {
         >
           Submit
         </Button>
-      </form>
+      </ValidatorForm>
     </Container>
   );
 };

@@ -1,7 +1,9 @@
 import React from "react";
 import "./signupForm.css";
 import { Link } from "react-router-dom";
-import { Button, TextField, Grid, Paper, Typography } from "@material-ui/core";
+import { Button, Grid, Paper, Typography } from "@material-ui/core";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
@@ -11,10 +13,9 @@ class SignUp extends React.Component {
       email: "",
       isAuthenticate: false,
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     fetch(process.env.REACT_APP_API_URL + "/auth/signup", {
       method: "PUT",
@@ -32,7 +33,7 @@ class SignUp extends React.Component {
         console.log(response);
         if (response.statusCode >= 400 && response.statusCode <= 500) {
           console.log(response);
-          alert("User with given email is already registered.");
+          alert("some internal error occur.");
           // this.setState({ username: "", password: "", email: "" });
         } else this.props.history.push("/login");
       })
@@ -40,7 +41,7 @@ class SignUp extends React.Component {
         console.log(err);
         alert("some error occur");
       });
-  }
+  };
   render() {
     return (
       <div>
@@ -64,67 +65,70 @@ class SignUp extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <form onSubmit={this.handleSubmit}>
+                  <ValidatorForm onSubmit={this.handleSubmit}>
                     <Grid container direction="column" spacing={2}>
                       <Grid item>
-                        <TextField
+                        <TextValidator
+                          className="input-width"
                           type="text"
                           placeholder="UserName"
                           fullWidth
                           name="username"
                           variant="outlined"
                           value={this.state.username}
+                          validators={["required", "minStringLength:5"]}
+                          errorMessages={[
+                            "required",
+                            "Username should be atleast 5 charecter long.",
+                          ]}
                           onChange={(event) =>
                             this.setState({
                               username: event.target.value,
                             })
                           }
-                          required
                           autoFocus
                         />
                       </Grid>
                       <Grid item>
-                        <TextField
+                        <TextValidator
+                          className="input-width"
                           type="email"
                           placeholder="Email"
                           fullWidth
                           name="email"
                           variant="outlined"
                           value={this.state.email}
+                          validators={["required", "isEmail"]}
+                          errorMessages={["required", "email is not valid"]}
                           onChange={(event) =>
                             this.setState({
                               [event.target.name]: event.target.value,
                             })
                           }
-                          required
                         />
                       </Grid>
                       <Grid item>
-                        <TextField
+                        <TextValidator
+                          className="input-width"
                           type="password"
                           placeholder="Password"
                           fullWidth
                           name="password"
                           variant="outlined"
                           value={this.state.password}
+                          validators={["required", "minStringLength:5"]}
+                          errorMessages={[
+                            "required",
+                            "Password should be atleast 5 charecter long.",
+                          ]}
                           onChange={(event) =>
                             this.setState({
                               [event.target.name]: event.target.value,
                             })
                           }
-                          required
                         />
                       </Grid>
-                      <Grid item>
-                        <TextField
-                          // error
-                          id="filled-error-helper-text"
-                          label="Error"
-                          // defaultValue="Hello World"
-                          helperText="Incorrect entry."
-                          variant="outlined"
-                        />
-                      </Grid>
+
                       <Grid item>
                         <Button
                           variant="outlined"
@@ -136,7 +140,7 @@ class SignUp extends React.Component {
                         </Button>
                       </Grid>
                     </Grid>
-                  </form>
+                  </ValidatorForm>
                 </Grid>
                 <Grid item className="mrt">
                   Already Registereded? <Link to="/login">Login</Link>

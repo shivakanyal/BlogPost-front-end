@@ -1,9 +1,10 @@
 import React from "react";
 import "./loginForm.css";
 import { Link } from "react-router-dom";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import {
   Button,
-  TextField,
+  // TextField,
   Grid,
   Paper,
   // AppBar,
@@ -65,7 +66,7 @@ class Login extends React.Component {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <form
+                  <ValidatorForm
                     onSubmit={(e) =>
                       this.props.handleSubmit(
                         e,
@@ -76,36 +77,41 @@ class Login extends React.Component {
                   >
                     <Grid container direction="column" spacing={2}>
                       <Grid item>
-                        <TextField
+                        <TextValidator
+                          className="input-width"
                           type="email"
                           placeholder="Email"
                           fullWidth
                           name="email"
                           variant="outlined"
                           value={this.state.email}
+                          validators={["required", "isEmail"]}
+                          errorMessages={["required", "email is not valid"]}
                           onChange={(event) =>
                             this.setState({
                               [event.target.name]: event.target.value,
                             })
                           }
-                          required
                           autoFocus
                         />
                       </Grid>
                       <Grid item>
-                        <TextField
+                        <TextValidator
+                          className="input-width"
                           type="password"
                           placeholder="Password"
                           fullWidth
                           name="password"
                           variant="outlined"
                           value={this.state.password}
+                          validators={["required"]}
+                          errorMessages={["required"]}
                           onChange={(event) =>
                             this.setState({
                               [event.target.name]: event.target.value,
                             })
                           }
-                          required
+                          // required
                         />
                       </Grid>
                       <Grid item>
@@ -119,7 +125,7 @@ class Login extends React.Component {
                         </Button>
                       </Grid>
                     </Grid>
-                  </form>
+                  </ValidatorForm>
                 </Grid>
                 <Grid item>
                   <Link href="#" variant="body2">
