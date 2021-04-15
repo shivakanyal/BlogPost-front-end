@@ -34,8 +34,9 @@ class App extends React.Component {
       });
   };
 
-  handleSubmit = (e, { id, title, content, category, image, history }) => {
+  handleSubmit = (e, { id, title, content, category, image, setLoader }) => {
     e.preventDefault();
+    setLoader(true);
     const feed = {
       title: title,
       content: content,
@@ -73,7 +74,6 @@ class App extends React.Component {
   };
   handleDelete = (id) => {
     const prevFeeds = this.state.feeds;
-    console.log("prevFeeds : ", prevFeeds);
     const newFeeds = this.state.feeds.filter((feed) => feed._id !== id);
     this.setState({ feeds: newFeeds, filteredFeeds: newFeeds });
 
